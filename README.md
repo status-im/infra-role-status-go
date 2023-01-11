@@ -51,6 +51,6 @@ And check logs:
 ```
 admin@mail-01.do-ams3.eth.test:~ % sudo journalctl -o cat -u dump-status-go-db
 Starting Dumping mailserver PostgreSQL database...
-Created: /var/tmp/backups/mailsrv/statusd_mail_db_dump_20200331130625.sql
+Created: /var/tmp/backups/mailsrv/status_go_db_dump_20200331130625.sql
 Started Dumping mailserver PostgreSQL database.
 ```
