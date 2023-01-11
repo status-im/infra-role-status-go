@@ -1,0 +1,40 @@
+---
+- name: Create directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: dockremap
+    group: docker
+    recurse: true
+  with_items:
+    - '{{ mailsrv_node_cont_vol }}/keys'
+    - '{{ mailsrv_node_cont_vol }}/data'
+    - '{{ mailsrv_node_cont_vol }}/conf'
+
+- name: Generate node key and address
+  include_role:
+    name: enode-setup
+  vars:
+    cont_name: '{{ mailsrv_service_name }}'
+    keys_path: '{{ mailsrv_node_cont_vol }}/keys'
+    listen_port: '{{ mailsrv_node_alt_port }}'
+
+- name: Generate config
+  include_tasks: config.yml
+
+- name: Create container
+  include_tasks: container.yml
+
+- name: Configure database
+  include_tasks: database.yml
+
+- name: Configure Consul service
+  include_tasks: consul.yml
+
+- name: Configure DB Backups
+  include_tasks: backup.yml
+  when: mailsrv_db_backup_enabled
+
+- name: Configure restarts
+  include_tasks: restart.yml
+  when: mailsrv_restart_enabled

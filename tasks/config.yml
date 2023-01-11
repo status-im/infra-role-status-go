@@ -1,0 +1,36 @@
+---
+- name: Create database directories
+  file:
+    path: '{{ item }}'
+    owner: '{{ mailsrv_db_host_uid }}'
+    group: 'dockremap'
+    mode: 0777
+    state: 'directory'
+  with_items:
+    - '{{ mailsrv_db_cont_vol }}/data'
+    - '{{ mailsrv_db_cont_vol }}/backup'
+
+- name: Create config file
+  template:
+    src: 'config.json.j2'
+    dest: '{{ mailsrv_node_cont_vol }}/conf/config.json'
+    owner: dockremap
+    group: docker
+    mode: 0640
+  register: mailsrv_config_file
+
+- name: Create script for calling RPC endpoint
+  template:
+    src: 'rpc.sh.j2'
+    dest: '{{ mailsrv_service_path }}/rpc.sh'
+    owner: dockremap
+    group: docker
+    mode: 0755
+
+- name: Create script for using Postgres client
+  template:
+    src: 'psql.sh.j2'
+    dest: '{{ mailsrv_service_path }}/psql.sh'
+    owner: dockremap
+    group: docker
+    mode: 0755

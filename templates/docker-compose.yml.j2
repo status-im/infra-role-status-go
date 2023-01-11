@@ -1,0 +1,76 @@
+---
+version: '3.7'
+services:
+  node:
+    container_name: '{{ mailsrv_node_cont_name }}'
+    image: '{{ mailsrv_node_cont_image }}'
+    entrypoint: 'statusd'
+    user: 'root'
+    restart: 'always'
+    deploy:
+      resources:
+        # some limits due to statusd hogging resources
+        limits:
+          memory: '{{ cont_mem_limit }}m'
+    labels:
+      # enable image updates via watchtower
+      com.centurylinklabs.watchtower.enable: '{{ mailsrv_watchtower_enabled|lower }}'
+    ports:
+      - '{{ mailsrv_node_listen_port }}:{{ mailsrv_node_listen_port }}/tcp'
+      - '{{ mailsrv_node_listen_port }}:{{ mailsrv_node_listen_port }}/udp'
+      - '{{ mailsrv_node_alt_port }}:{{ mailsrv_node_listen_port }}/tcp'
+      - '{{ mailsrv_node_alt_port }}:{{ mailsrv_node_listen_port }}/udp'
+      - '{{ mailsrv_node_rpc_port }}:{{ mailsrv_node_rpc_port }}/tcp'
+{% if mailsrv_node_metrics_enabled %}
+      - '{{ mailsrv_node_metrics_port }}:{{ mailsrv_node_metrics_port }}/tcp'
+{% endif %}
+{% if mailsrv_node_pprof_enabled %}
+      - '127.0.0.1:{{ mailsrv_node_pprof_port }}:{{ mailsrv_node_pprof_port }}/tcp'
+{% endif %}
+    volumes:
+      - '{{ mailsrv_node_cont_vol }}/keys:/keys/:ro'
+      - '{{ mailsrv_node_cont_vol }}/data:/data/:rw'
+      - '{{ mailsrv_node_cont_vol }}/conf:/conf/:ro'
+    command: |
+      -log-without-color
+      -c=/conf/config.json
+      -dir=/data
+{% if mailsrv_node_metrics_enabled %}
+      -metrics
+      -metrics-port={{ mailsrv_node_metrics_port }}
+{% endif %}
+{% if mailsrv_node_pprof_enabled %}
+      -pprof
+      -pprof-port={{ mailsrv_node_pprof_port }}
+{% endif %}
+    depends_on:
+      - 'db'
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:{{ mailsrv_node_metrics_port }}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    container_name: '{{ mailsrv_db_cont_name }}'
+    image: '{{ mailsrv_db_cont_image }}'
+    restart: always
+    environment:
+      POSTGRES_DB:       '{{ mailsrv_waku_db_name | mandatory }}'
+      POSTGRES_USER:     '{{ mailsrv_db_user | mandatory }}'
+      POSTGRES_PASSWORD: '{{ mailsrv_db_pass | mandatory }}'
+      # This fixes chmod errors on DB startup due to volume + userns-remap
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    ports:
+      - '{{ mailsrv_db_cont_port }}:{{ mailsrv_db_cont_port }}'
+    command: '-p {{ mailsrv_db_cont_port }}'
+    tmpfs:
+      - '/run/postgresql:size=512K'
+      - '/tmp:size=256K'
+    volumes:
+      - '{{ mailsrv_db_cont_vol }}/data:/var/lib/postgresql/data'
+      - '{{ mailsrv_db_cont_vol }}/backup:/backup'
+    healthcheck:
+      test: ["CMD", "pg_isready", "-p{{ mailsrv_db_cont_port }}", "-U{{ mailsrv_db_user }}"]
+      interval: 30s
+      retries: 3

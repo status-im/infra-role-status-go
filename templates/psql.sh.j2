@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+EXEC_FLAGS='-i'
+# If TTY is attached Docker needs to know too.
+if [[ -t 0 ]]; then
+    EXEC_FLAGS='-it'
+fi
+exec docker exec ${EXEC_FLAGS} statusd-mail-db \
+    psql $@ \
+        -U {{ mailsrv_db_user }} \
+        -p {{ mailsrv_db_cont_port }} \
+        -d {{ mailsrv_waku_db_name }}

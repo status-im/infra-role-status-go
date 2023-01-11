@@ -1,0 +1,47 @@
+---
+- name: Define Consul Services
+  set_fact:
+    consul_services:
+      - id:   '{{ mailsrv_service_name }}'
+        name: '{{ mailsrv_service_name }}'
+        port: '{{ mailsrv_node_alt_port }}'
+        tags: ['statusd', 'mail', 'devp2p']
+        meta:
+          node_addr: '{{ node_addr }}'
+          node_enode: '{{ node_enode }}'
+          waku_enabled: '{{ mailsrv_waku_enabled | string }}'
+        checks:
+          - id: statusd-mail-health
+            type: tcp
+            tcp: 'localhost:{{ mailsrv_node_listen_port }}'
+
+      - id: '{{ mailsrv_service_name }}-metrics'
+        name: '{{ mailsrv_service_name }}-metrics'
+        port: '{{ mailsrv_node_metrics_port }}'
+        address: '{{ ansible_local.wireguard.vpn_ip }}'
+        tags: ['statusd', 'mail', 'metrics']
+        checks:
+          - id: statusd-mail-metrics
+            type: http
+            http: 'http://localhost:{{ mailsrv_node_metrics_port }}/health'
+
+      - id: '{{ mailsrv_service_name }}-rpc'
+        name: '{{ mailsrv_service_name }}-rpc'
+        port: '{{ mailsrv_node_rpc_port }}'
+        address: '{{ ansible_local.wireguard.vpn_ip }}'
+        tags: ['statusd', 'mail', 'rpc']
+        checks:
+          - id: statusd-rpc-health
+            type: script
+            script: 'curl -s -X POST -H Content-type:application/json --data {"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1} http://localhost:{{ mailsrv_node_rpc_port }}/'
+
+- name: Remove metrics Consul service
+  set_fact:
+    consul_services: |
+      {{ consul_services | rejectattr('name', 'match', '.*-metrics$') | list }}
+  when: not mailsrv_node_metrics_enabled
+
+- name: Create Consul service definition - mail
+  include_role: name=consul-service
+  vars:
+    consul_config_name: '{{ mailsrv_service_name | replace("-", "_") }}'
