@@ -2,21 +2,21 @@
 - name: Create timer for backups
   include_role: name=systemd-timer
   vars:
-    systemd_timer_name: '{{ mailsrv_db_backup_name }}'
-    systemd_timer_user: '{{ mailsrv_db_backup_user }}'
+    systemd_timer_name: '{{ status_go_db_backup_name }}'
+    systemd_timer_user: '{{ status_go_db_backup_user }}'
     systemd_timer_description: 'Dumping mailserver PostgreSQL database'
-    systemd_timer_enabled: '{{ mailsrv_db_backup_enabled }}'
-    systemd_timer_frequency: '{{ mailsrv_db_backup_frequency }}'
-    systemd_timer_timeout_sec: '{{ mailsrv_db_backup_timeout }}'
+    systemd_timer_enabled: '{{ status_go_db_backup_enabled }}'
+    systemd_timer_frequency: '{{ status_go_db_backup_frequency }}'
+    systemd_timer_timeout_sec: '{{ status_go_db_backup_timeout }}'
     systemd_timer_requires_extra: 'docker.service'
     systemd_timer_consul_warning: true
     systemd_timer_start_on_creation: false
     systemd_timer_script_content: |
       #!/usr/bin/env bash
       set -e
-      BKP_DIR="{{ mailsrv_db_cont_vol }}/backup/{{ mailsrv_waku_db_name }}"
+      BKP_DIR="{{ status_go_db_cont_vol }}/backup/{{ status_go_waku_db_name }}"
       rm -vfr "${BKP_DIR}"
-      /usr/bin/docker exec -i {{ mailsrv_db_cont_name }} \
-        pg_dump -F directory -f "/backup/{{ mailsrv_waku_db_name }}" \
-        -U {{ mailsrv_db_user }} {{ mailsrv_waku_db_name }}
+      /usr/bin/docker exec -i {{ status_go_db_cont_name }} \
+        pg_dump -F directory -f "/backup/{{ status_go_waku_db_name }}" \
+        -U {{ status_go_db_user }} {{ status_go_waku_db_name }}
       chmod 750 -R "${BKP_DIR}"

@@ -7,17 +7,17 @@
     group: docker
     recurse: true
   with_items:
-    - '{{ mailsrv_node_cont_vol }}/keys'
-    - '{{ mailsrv_node_cont_vol }}/data'
-    - '{{ mailsrv_node_cont_vol }}/conf'
+    - '{{ status_go_node_cont_vol }}/keys'
+    - '{{ status_go_node_cont_vol }}/data'
+    - '{{ status_go_node_cont_vol }}/conf'
 
 - name: Generate node key and address
   include_role:
     name: enode-setup
   vars:
-    cont_name: '{{ mailsrv_service_name }}'
-    keys_path: '{{ mailsrv_node_cont_vol }}/keys'
-    listen_port: '{{ mailsrv_node_alt_port }}'
+    cont_name: '{{ status_go_service_name }}'
+    keys_path: '{{ status_go_node_cont_vol }}/keys'
+    listen_port: '{{ status_go_node_alt_port }}'
 
 - name: Generate config
   include_tasks: config.yml
@@ -33,8 +33,8 @@
 
 - name: Configure DB Backups
   include_tasks: backup.yml
-  when: mailsrv_db_backup_enabled
+  when: status_go_db_backup_enabled
 
 - name: Configure restarts
   include_tasks: restart.yml
-  when: mailsrv_restart_enabled
+  when: status_go_restart_enabled

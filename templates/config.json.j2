@@ -1,26 +1,26 @@
 {
-  "LogLevel": "{{ mailsrv_log_level }}",
+  "LogLevel": "{{ status_go_log_level }}",
   "IPCEnabled": true,
   "HTTPEnabled": true,
   "HTTPHost": "0.0.0.0",
-  "HTTPPort": {{ mailsrv_node_rpc_port }},
+  "HTTPPort": {{ status_go_node_rpc_port }},
   "MaxPeers": 5000,
   "APIModules": "eth,web3,admin,waku,wakuext",
   "DataDir": "/data",
   "EnableNTPSync": true,
-  "ListenAddr": "0.0.0.0:{{ mailsrv_node_listen_port }}",
+  "ListenAddr": "0.0.0.0:{{ status_go_node_listen_port }}",
   "AdvertiseAddr": "{{ ansible_host }}",
   "NodeKey": "{{ node_key }}",
-  "NetworkID": {{ mailsrv_eth_network }},
+  "NetworkID": {{ status_go_eth_network }},
   "Rendezvous": true,
-  "RegisterTopics": [ "{{ mailsrv_topic }}" ],
+  "RegisterTopics": [ "{{ status_go_topic }}" ],
   "RequireTopics": { "whisper": { "min": 3, "max": 4 } },
   "WakuConfig": {
-    "Enabled": {{ mailsrv_waku_enabled | to_json }},
+    "Enabled": {{ status_go_waku_enabled | to_json }},
     "EnableMailServer": true,
-    "EnableConfirmations": {{ mailsrv_confirmations_enabled | to_json }},
+    "EnableConfirmations": {{ status_go_confirmations_enabled | to_json }},
     "FullNode": true,
-    "MailServerPassword": "{{ mailsrv_wnode_password }}",
+    "MailServerPassword": "{{ status_go_wnode_password }}",
     "DataDir": "/data/waku",
     "EnableRateLimiter": true,
     "RateLimitIP": 5,
@@ -30,13 +30,13 @@
     "DatabaseConfig": {
       "PGConfig": {
         "Enabled": true,
-        "URI": "postgres://{{ mailsrv_db_user }}:{{ mailsrv_db_pass }}@{{ mailsrv_db_host }}:{{ mailsrv_db_port }}/{{ mailsrv_waku_db_name }}{{ mailsrv_db_opts }}"
+        "URI": "postgres://{{ status_go_db_user }}:{{ status_go_db_pass }}@{{ status_go_db_host }}:{{ status_go_db_port }}/{{ status_go_waku_db_name }}{{ status_go_db_opts }}"
       }
     }
   },
   "PushNotificationServerConfig": {
-    "Enabled": {{ mailsrv_pn_server_enabled | to_json }},
-    "GorushURL": "{{ mailsrv_pn_server_gorush_url }}"
+    "Enabled": {{ status_go_pn_server_enabled | to_json }},
+    "GorushURL": "{{ status_go_pn_server_gorush_url }}"
   },
   "ClusterConfig": {
     "Enabled": true,

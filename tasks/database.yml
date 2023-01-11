@@ -1,15 +1,15 @@
 ---
 - name: Adjust the Auto-Vacuum settings
   lineinfile:
-    path: '{{ mailsrv_db_cont_vol }}/data/pgdata/postgresql.conf'
+    path: '{{ status_go_db_cont_vol }}/data/pgdata/postgresql.conf'
     insertafter: '^#{{ item.key }} = '
     line: '{{ item.key }} = {{ item.val }}'
   with_items:
-    - { key: 'autovacuum_vacuum_scale_factor', val: '{{ mailsrv_db_vacuum_scale_factor }}' }
+    - { key: 'autovacuum_vacuum_scale_factor', val: '{{ status_go_db_vacuum_scale_factor }}' }
   register: pg_db_config
 
 - name: Restart database container
   command: 'docker-compose restart db'
   args:
-    chdir: '{{ mailsrv_service_path }}'
+    chdir: '{{ status_go_service_path }}'
   when: pg_db_config.changed

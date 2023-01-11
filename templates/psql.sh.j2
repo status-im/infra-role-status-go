@@ -6,6 +6,6 @@ if [[ -t 0 ]]; then
 fi
 exec docker exec ${EXEC_FLAGS} statusd-mail-db \
     psql $@ \
-        -U {{ mailsrv_db_user }} \
-        -p {{ mailsrv_db_cont_port }} \
-        -d {{ mailsrv_waku_db_name }}
+        -U {{ status_go_db_user }} \
+        -p {{ status_go_db_cont_port }} \
+        -d {{ status_go_waku_db_name }}

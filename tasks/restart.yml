@@ -2,14 +2,14 @@
 - name: Create timer for restarts
   include_role: name=systemd-timer
   vars:
-    systemd_timer_name: '{{ mailsrv_restart_timer_name }}'
+    systemd_timer_name: '{{ status_go_restart_timer_name }}'
     systemd_timer_user: 'root'
     systemd_timer_description: 'Restart mailserver node'
     systemd_timer_documentation: 'https://github.com/status-im/infra-eth-cluster'
-    systemd_timer_enabled: '{{ mailsrv_restart_timer_enabled }}'
-    systemd_timer_frequency: '{{ mailsrv_restart_timer_frequency }}'
-    systemd_timer_random_delay_sec: '{{ mailsrv_restart_timer_random_delay_sec }}'
+    systemd_timer_enabled: '{{ status_go_restart_timer_enabled }}'
+    systemd_timer_frequency: '{{ status_go_restart_timer_frequency }}'
+    systemd_timer_random_delay_sec: '{{ status_go_restart_timer_random_delay_sec }}'
     systemd_timer_requires_extra: 'docker.service'
     systemd_timer_start_on_creation: false
     systemd_timer_script_path: '/usr/bin/docker'
-    systemd_timer_script_args: 'restart {{ mailsrv_node_cont_name }}'
+    systemd_timer_script_args: 'restart {{ status_go_node_cont_name }}'

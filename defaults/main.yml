@@ -1,71 +1,71 @@
 ---
 # Main service name
-mailsrv_service_name: 'statusd-mail'
-mailsrv_service_path: '/docker/{{ mailsrv_service_name }}'
-mailsrv_service_compose: '{{ mailsrv_service_path }}/docker-compose.yml'
+status_go_service_name: 'status-go'
+status_go_service_path: '/docker/{{ status_go_service_name }}'
+status_go_service_compose: '{{ status_go_service_path }}/docker-compose.yml'
 
 # Options: ERROR|WARN|INFO|DEBUG|TRACE
-mailsrv_log_level: 'INFO'
+status_go_log_level: 'INFO'
 
 # History node access password
-mailsrv_wnode_password: 'status-offline-inbox'
-mailsrv_eth_network: 4
+status_go_wnode_password: 'status-offline-inbox'
+status_go_eth_network: 4
 # Optional Waku Node configuration
-mailsrv_waku_enabled: true
-mailsrv_waku_db_name: waku
+status_go_waku_enabled: true
+status_go_waku_db_name: waku
 # Topic for envelopes
-mailsrv_topic: 'whispermail'
+status_go_topic: 'whispermail'
 # Confirmations
-mailsrv_confirmations_enabled: false
+status_go_confirmations_enabled: false
 
 # Status-go node
-mailsrv_node_cont_name: '{{ mailsrv_service_name }}-node'
-mailsrv_node_cont_vol: '{{ mailsrv_service_path }}/node'
-mailsrv_node_cont_tag: 'latest'
-mailsrv_node_cont_image: 'statusteam/status-go:{{ mailsrv_node_cont_tag }}'
-mailsrv_node_listen_port: 30504
-mailsrv_node_alt_port: 443
-mailsrv_node_rpc_port: 8545
-mailsrv_node_pprof_enabled: false
-mailsrv_node_pprof_port: 52525
-mailsrv_node_metrics_enabled: true
-mailsrv_node_metrics_port: 9305
+status_go_node_cont_name: '{{ status_go_service_name }}-node'
+status_go_node_cont_vol: '{{ status_go_service_path }}/node'
+status_go_node_cont_tag: 'latest'
+status_go_node_cont_image: 'statusteam/status-go:{{ status_go_node_cont_tag }}'
+status_go_node_listen_port: 30504
+status_go_node_alt_port: 443
+status_go_node_rpc_port: 8545
+status_go_node_pprof_enabled: false
+status_go_node_pprof_port: 52525
+status_go_node_metrics_enabled: true
+status_go_node_metrics_port: 9305
 # Alternative PostgreSQL database for whisper offline inbox
-mailsrv_db_cont_name: '{{ mailsrv_service_name }}-db'
-mailsrv_db_cont_vol: '{{ mailsrv_service_path }}/db'
-mailsrv_db_cont_image: 'postgres:9.6-alpine'
-mailsrv_db_cont_port: 5432
-mailsrv_db_cont_uid: 70
-mailsrv_db_host_uid: '{{ 100000 + mailsrv_db_cont_uid | int }}'
+status_go_db_cont_name: '{{ status_go_service_name }}-db'
+status_go_db_cont_vol: '{{ status_go_service_path }}/db'
+status_go_db_cont_image: 'postgres:9.6-alpine'
+status_go_db_cont_port: 5432
+status_go_db_cont_uid: 70
+status_go_db_host_uid: '{{ 100000 + status_go_db_cont_uid | int }}'
 # PostgreSQL connection settings
-mailsrv_db_user: ~
-mailsrv_db_pass: ~
-mailsrv_db_host: db
-mailsrv_db_port: '{{ mailsrv_db_cont_port }}'
-mailsrv_db_opts: '?sslmode=disable'
+status_go_db_user: ~
+status_go_db_pass: ~
+status_go_db_host: db
+status_go_db_port: '{{ status_go_db_cont_port }}'
+status_go_db_opts: '?sslmode=disable'
 # Default of 0.2 results in vacuum once every +10 days
-mailsrv_db_vacuum_scale_factor: 0.05
+status_go_db_vacuum_scale_factor: 0.05
 
 # container image auto-updates
-mailsrv_watchtower_enabled: true
+status_go_watchtower_enabled: true
 # Push Notifications Server configuration
-mailsrv_pn_server_enabled: true
-mailsrv_pn_server_gorush_url: 'https://gorush.status.im'
+status_go_pn_server_enabled: true
+status_go_pn_server_gorush_url: 'https://gorush.status.im'
 
 # backups configuration
-mailsrv_db_backup_enabled: true
-mailsrv_db_backup_name: 'dump-{{ mailsrv_db_cont_name }}'
-mailsrv_db_backup_user: 'root'
-mailsrv_db_backup_frequency: 'daily'
-mailsrv_db_backup_timeout: 3600
-mailsrv_db_backup_retention: 1
+status_go_db_backup_enabled: true
+status_go_db_backup_name: 'dump-{{ status_go_db_cont_name }}'
+status_go_db_backup_user: 'root'
+status_go_db_backup_frequency: 'daily'
+status_go_db_backup_timeout: 3600
+status_go_db_backup_retention: 1
 
 # auto restarts
-mailsrv_restart_enabled: false
-mailsrv_restart_timer_enabled: '{{ mailsrv_restart_enabled }}'
-mailsrv_restart_timer_name: 'restart-{{ mailsrv_service_name }}'
-mailsrv_restart_timer_frequency: 'daily'
-mailsrv_restart_timer_random_delay_sec: 21600 # 6 hours
+status_go_restart_enabled: false
+status_go_restart_timer_enabled: '{{ status_go_restart_enabled }}'
+status_go_restart_timer_name: 'restart-{{ status_go_service_name }}'
+status_go_restart_timer_frequency: 'daily'
+status_go_restart_timer_random_delay_sec: 21600 # 6 hours
 
 # resources limits to avoid killing the host
 cont_mem_limit: '{{ (ansible_memtotal_mb * 0.8) | int }}'

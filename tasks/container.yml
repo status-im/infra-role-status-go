@@ -2,18 +2,18 @@
 - name: Create compose file
   template:
     src: 'docker-compose.yml.j2'
-    dest: '{{ mailsrv_service_compose }}'
+    dest: '{{ status_go_service_compose }}'
     owner: 'dockremap'
     group: 'docker'
     mode: 0640
 
 - name: Create containers
   docker_compose:
-    project_src: '{{ mailsrv_service_path }}'
+    project_src: '{{ status_go_service_path }}'
     pull: true
     build: false
     state: '{{ compose_state }}'
     restarted: '{{ compose_restart }}'
     recreate: |-
-      {{ mailsrv_config_file.changed
+      {{ status_go_config_file.changed
       | ternary("always", compose_recreate) }}
