@@ -25,31 +25,31 @@ The containers are created using [Docker Compose](https://docs.docker.com/compos
 ```
 admin@mail-01.do-ams3.eth.test:~ % docker ps 
 CONTAINER ID        NAMES               IMAGE                              CREATED             STATUS
-dca9b2a708c2        statusd-mail-node   statusteam/status-go:deploy-test   2 minutes ago       Up 4 seconds
-bfed6063abe9        statusd-mail-db     postgres:9.6-alpine                2 minutes ago       Up 2 minutes
+dca9b2a708c2        status-go-node   statusteam/status-go:deploy-test   2 minutes ago       Up 4 seconds
+bfed6063abe9        status-go-db     postgres:9.6-alpine                2 minutes ago       Up 2 minutes
 ```
 You can manage the containers using `docker-compose`. To re-create them use:
 ```
-admin@mail-01.do-ams3.eth.test:/docker/statusd-mailsrv % docker-compose --compatibility up --force-recreate -d
-Recreating statusd-mail-db ... done
-Recreating statusd-mail-node ... done
+admin@mail-01.do-ams3.eth.test:/docker/status-go % docker-compose --compatibility up --force-recreate -d
+Recreating status-go-db ... done
+Recreating status-go-node ... done
 ```
 
 # Backups
 
 Backups of the PostgreSQL DB are done using [systemd timers](https://www.freedesktop.org/software/systemd/man/systemd.timer.html) and can be viewed using `systemctl`:
 ```
-admin@mail-01.do-ams3.eth.test:~ % sudo systemctl -a list-timers 'dump-statusd-mail*'   
+admin@mail-01.do-ams3.eth.test:~ % sudo systemctl -a list-timers 'dump-status-go*'   
 NEXT                         LEFT     LAST PASSED UNIT                       ACTIVATES
-Wed 2020-04-01 00:00:00 UTC  10h left n/a  n/a    dump-statusd-mail-db.timer dump-statusd-mail-db.service
+Wed 2020-04-01 00:00:00 UTC  10h left n/a  n/a    dump-status-go-db.timer dump-status-go-db.service
 ```
 And ran manually:
 ```
-admin@mail-01.do-ams3.eth.test:~ % sudo systemctl start dump-statusd-mail-db
+admin@mail-01.do-ams3.eth.test:~ % sudo systemctl start dump-status-go-db
 ```
 And check logs:
 ```
-admin@mail-01.do-ams3.eth.test:~ % sudo journalctl -o cat -u dump-statusd-mail-db
+admin@mail-01.do-ams3.eth.test:~ % sudo journalctl -o cat -u dump-status-go-db
 Starting Dumping mailserver PostgreSQL database...
 Created: /var/tmp/backups/mailsrv/statusd_mail_db_dump_20200331130625.sql
 Started Dumping mailserver PostgreSQL database.
