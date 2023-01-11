@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: Jakub Sokolowski <jakub@status.im>
+  description: Deploy status-go node
+  company: Status.im
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+    - focal
+  dependencies: []
