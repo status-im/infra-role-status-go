@@ -1,4 +1,12 @@
 ---
+- name: Create PSQL wrapper script
+  template:
+    src:   'psql.sh.j2'
+    dest:  '{{ status_go_service_path }}/psql.sh'
+    owner: 'dockremap'
+    group: 'docker'
+    mode:  0755
+
 - name: Adjust the Auto-Vacuum settings
   lineinfile:
     path: '{{ status_go_db_cont_vol }}/data/pgdata/postgresql.conf'

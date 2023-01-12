@@ -9,6 +9,7 @@
   include_tasks: docker.yml
 
 - name: Configure database
+  when: status_go_mailserver_enabled
   include_tasks: database.yml
 
 - name: Query Node for address

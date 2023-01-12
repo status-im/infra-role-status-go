@@ -13,26 +13,28 @@
   "NodeKey": "{{ status_go_node_key }}",
   "NetworkID": {{ status_go_eth_network }},
   "Rendezvous": true,
-  "RegisterTopics": [ "{{ status_go_topic }}" ],
-  "RequireTopics": { "whisper": { "min": 3, "max": 4 } },
+  "RegisterTopics": [ "{{ status_go_register_topic }}" ],
+  "RequireTopics": { "{{ status_go_require_topic }}": { "min": 3, "max": 5 } },
   "WakuConfig": {
     "Enabled": {{ status_go_waku_enabled | to_json }},
-    "EnableMailServer": true,
     "EnableConfirmations": {{ status_go_confirmations_enabled | to_json }},
-    "FullNode": true,
+{% if status_go_mailserver_enabled %}
+    "EnableMailServer": {{ status_go_mailserver_enabled | to_json }},
     "MailServerPassword": "{{ status_go_wnode_password }}",
-    "DataDir": "/data/waku",
-    "EnableRateLimiter": true,
-    "RateLimitIP": 5,
-    "RateLimitPeerID": 5,
-    "RateLimitTolerance": 3,
     "MailServerDataRetention": 30,
     "DatabaseConfig": {
       "PGConfig": {
         "Enabled": true,
         "URI": "postgres://{{ status_go_db_user }}:{{ status_go_db_pass }}@{{ status_go_db_host }}:{{ status_go_db_port }}/{{ status_go_waku_db_name }}{{ status_go_db_opts }}"
       }
-    }
+    },
+{% endif %}
+    "FullNode": true,
+    "DataDir": "/data/waku",
+    "EnableRateLimiter": true,
+    "RateLimitIP": 5,
+    "RateLimitPeerID": 5,
+    "RateLimitTolerance": 3
   },
   "PushNotificationServerConfig": {
     "Enabled": {{ status_go_pn_server_enabled | to_json }},

@@ -11,11 +11,14 @@ status_go_log_level: 'INFO'
 status_go_wnode_password: 'status-offline-inbox'
 # See geth/params/cluster.go in status-go
 status_go_eth_network: 1
+# Enable storing historical messages.
+status_go_mailserver_enabled: false
 # Optional Waku Node configuration
 status_go_waku_enabled: true
 status_go_waku_db_name: waku
 # Topic for envelopes
-status_go_topic: 'whispermail'
+status_go_register_topic: '{{ "whispermail" if status_go_mailserver_enabled else "whisper" }}'
+status_go_require_topic: 'whisper'
 # Confirmations
 status_go_confirmations_enabled: false
 # Bootstrapping
@@ -61,7 +64,7 @@ status_go_pn_server_enabled: true
 status_go_pn_server_gorush_url: 'https://gorush.status.im'
 
 # backups configuration
-status_go_db_backup_enabled: true
+status_go_db_backup_enabled: '{{ status_go_mailserver_enabled }}'
 status_go_db_backup_name: 'dump-{{ status_go_db_cont_name }}'
 status_go_db_backup_user: 'root'
 status_go_db_backup_frequency: 'daily'
@@ -74,6 +77,8 @@ status_go_restart_timer_enabled: '{{ status_go_restart_enabled }}'
 status_go_restart_timer_name: 'restart-{{ status_go_service_name }}'
 status_go_restart_timer_frequency: 'daily'
 status_go_restart_timer_random_delay_sec: 21600 # 6 hours
+
+status_go_consul_extra_tag: '{{ "mail" if status_go_mailserver_enabled else "whisper" }}'
 
 # resources limits to avoid killing the host
 cont_mem_limit: '{{ (ansible_memtotal_mb * 0.8) | int }}'

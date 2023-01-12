@@ -5,35 +5,35 @@
       - id:   '{{ status_go_service_name }}'
         name: '{{ status_go_service_name }}'
         port: '{{ status_go_node_alt_port }}'
-        tags: ['statusd', 'mail', 'devp2p']
+        tags: ['statusd', 'devp2p', '{{ status_go_consul_extra_tag }}']
         meta:
           node_addr: '{{ status_go_node_addr }}'
           node_enr: '{{ status_go_node_enr }}'
           node_enode: '{{ status_go_node_enode }}'
           waku_enabled: '{{ status_go_waku_enabled | string }}'
         checks:
-          - id: statusd-mail-health
-            type: tcp
-            tcp: 'localhost:{{ status_go_node_listen_port }}'
+          - id:   '{{ status_go_service_name }}-health'
+            type: 'tcp'
+            tcp:  'localhost:{{ status_go_node_listen_port }}'
 
       - id: '{{ status_go_service_name }}-metrics'
         name: '{{ status_go_service_name }}-metrics'
         port: '{{ status_go_node_metrics_port }}'
         address: '{{ ansible_local.wireguard.vpn_ip }}'
-        tags: ['statusd', 'mail', 'metrics']
+        tags: ['statusd', 'metrics', '{{ status_go_consul_extra_tag }}']
         checks:
-          - id: statusd-mail-metrics
-            type: http
+          - id:   '{{ status_go_service_name }}-metrics-health'
+            type: 'http'
             http: 'http://localhost:{{ status_go_node_metrics_port }}/health'
 
       - id: '{{ status_go_service_name }}-rpc'
         name: '{{ status_go_service_name }}-rpc'
         port: '{{ status_go_node_rpc_port }}'
         address: '{{ ansible_local.wireguard.vpn_ip }}'
-        tags: ['statusd', 'mail', 'rpc']
+        tags: ['statusd', 'rpc', '{{ status_go_consul_extra_tag }}']
         checks:
-          - id: statusd-rpc-health
-            type: script
+          - id:     '{{ status_go_service_name }}-rpc-health'
+            type:   'script'
             script: 'curl -s -X POST -H Content-type:application/json --data {"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1} http://localhost:{{ status_go_node_rpc_port }}/'
 
 - name: Remove metrics Consul service

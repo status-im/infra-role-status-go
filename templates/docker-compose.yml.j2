@@ -43,13 +43,16 @@ services:
       -pprof
       -pprof-port={{ status_go_node_pprof_port }}
 {% endif %}
+{% if status_go_mailserver_enabled %}
     depends_on:
       - 'db'
+{% endif %}
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:{{ status_go_node_metrics_port }}/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+{% if status_go_mailserver_enabled %}
 
   db:
     container_name: '{{ status_go_db_cont_name }}'
@@ -74,3 +77,4 @@ services:
       test: ["CMD", "pg_isready", "-p{{ status_go_db_cont_port }}", "-U{{ status_go_db_user }}"]
       interval: 30s
       retries: 3
+{% endif %}

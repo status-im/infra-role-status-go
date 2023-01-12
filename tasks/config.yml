@@ -1,10 +1,10 @@
 ---
 - name: Create directories
   file:
-    path: '{{ item }}'
-    state: directory
-    owner: dockremap
-    group: docker
+    path:    '{{ item }}'
+    state:   'directory'
+    owner:   'dockremap'
+    group:   'docker'
     recurse: true
   with_items:
     - '{{ status_go_node_cont_vol }}/keys'
@@ -12,32 +12,30 @@
     - '{{ status_go_node_cont_vol }}/conf'
 
 - name: Create database directories
+  when: status_go_db_backup_enabled
   file:
-    path: '{{ item }}'
+    path:  '{{ item }}'
     owner: '{{ status_go_db_host_uid }}'
     group: 'dockremap'
-    mode: 0777
     state: 'directory'
+    mode:  0777
   with_items:
     - '{{ status_go_db_cont_vol }}/data'
     - '{{ status_go_db_cont_vol }}/backup'
 
 - name: Create config file
   template:
-    src: 'config.json.j2'
-    dest: '{{ status_go_node_cont_vol }}/conf/config.json'
-    owner: dockremap
-    group: docker
-    mode: 0640
+    src:   'config.json.j2'
+    dest:  '{{ status_go_node_cont_vol }}/conf/config.json'
+    owner: 'dockremap'
+    group: 'docker'
+    mode:  0640
   register: status_go_config_file
 
-- name: Create wrapper scripts
+- name: Create RPC wrapper script
   template:
-    src: '{{ item }}.j2'
-    dest: '{{ status_go_service_path }}/{{ item }}'
-    owner: dockremap
-    group: docker
-    mode: 0755
-  with_items:
-    - 'rpc.sh'
-    - 'psql.sh'
+    src:   'rpc.sh.j2'
+    dest:  '{{ status_go_service_path }}/rpc.sh'
+    owner: 'dockremap'
+    group: 'docker'
+    mode:  0755
