@@ -8,4 +8,4 @@ exec docker exec ${EXEC_FLAGS} {{ status_go_db_cont_name }} \
     psql $@ \
         -U {{ status_go_db_user }} \
         -p {{ status_go_db_cont_port }} \
-        -d {{ status_go_waku_db_name }}
+        -d {{ status_go_db_name }}

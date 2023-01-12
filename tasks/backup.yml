@@ -14,9 +14,9 @@
     systemd_timer_script_content: |
       #!/usr/bin/env bash
       set -e
-      BKP_DIR="{{ status_go_db_cont_vol }}/backup/{{ status_go_waku_db_name }}"
+      BKP_DIR="{{ status_go_db_cont_vol }}/backup/{{ status_go_db_name }}"
       rm -vfr "${BKP_DIR}"
       /usr/bin/docker exec -i {{ status_go_db_cont_name }} \
-        pg_dump -F directory -f "/backup/{{ status_go_waku_db_name }}" \
-        -U {{ status_go_db_user }} {{ status_go_waku_db_name }}
+        pg_dump -F directory -f "/backup/{{ status_go_db_name }}" \
+        -U {{ status_go_db_user }} {{ status_go_db_name }}
       chmod 750 -R "${BKP_DIR}"

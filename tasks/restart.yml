@@ -4,7 +4,7 @@
   vars:
     systemd_timer_name: '{{ status_go_restart_timer_name }}'
     systemd_timer_user: 'root'
-    systemd_timer_description: 'Restart mailserver node'
+    systemd_timer_description: 'Restart status-go node'
     systemd_timer_documentation: 'https://github.com/status-im/infra-eth-cluster'
     systemd_timer_enabled: '{{ status_go_restart_timer_enabled }}'
     systemd_timer_frequency: '{{ status_go_restart_timer_frequency }}'

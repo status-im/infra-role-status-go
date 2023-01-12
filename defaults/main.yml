@@ -15,7 +15,6 @@ status_go_eth_network: 1
 status_go_mailserver_enabled: false
 # Optional Waku Node configuration
 status_go_waku_enabled: true
-status_go_waku_db_name: waku
 # Topic for envelopes
 status_go_register_topic: '{{ "whispermail" if status_go_mailserver_enabled else "whisper" }}'
 status_go_require_topic: 'whisper'
@@ -49,6 +48,7 @@ status_go_db_cont_port: 5432
 status_go_db_cont_uid: 70
 status_go_db_host_uid: '{{ 100000 + status_go_db_cont_uid | int }}'
 # PostgreSQL connection settings
+status_go_db_name: waku
 status_go_db_user: ~
 status_go_db_pass: ~
 status_go_db_host: db

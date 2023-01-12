@@ -59,7 +59,7 @@ services:
     image: '{{ status_go_db_cont_image }}'
     restart: always
     environment:
-      POSTGRES_DB:       '{{ status_go_waku_db_name | mandatory }}'
+      POSTGRES_DB:       '{{ status_go_db_name | mandatory }}'
       POSTGRES_USER:     '{{ status_go_db_user | mandatory }}'
       POSTGRES_PASSWORD: '{{ status_go_db_pass | mandatory }}'
       # This fixes chmod errors on DB startup due to volume + userns-remap
