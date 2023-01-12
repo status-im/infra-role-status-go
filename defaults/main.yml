@@ -9,7 +9,8 @@ status_go_log_level: 'INFO'
 
 # History node access password
 status_go_wnode_password: 'status-offline-inbox'
-status_go_eth_network: 4
+# See geth/params/cluster.go in status-go
+status_go_eth_network: 1
 # Optional Waku Node configuration
 status_go_waku_enabled: true
 status_go_waku_db_name: waku
