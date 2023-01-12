@@ -41,12 +41,12 @@
   "ClusterConfig": {
     "Enabled": true,
     "BootNodes": [
-{% for node in boot_nodes %}
+{% for node in status_go_boot_nodes %}
       "{{ node }}"{{ "," if not loop.last }}
 {% endfor %}
     ],
     "RendezvousNodes": [
-{% for node in rendezvous_addresses %}
+{% for node in status_go_rendezvous_addresses %}
       "{{ node }}"{{ "," if not loop.last }}
 {% endfor %}
     ]

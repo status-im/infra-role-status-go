@@ -17,6 +17,9 @@ status_go_waku_db_name: waku
 status_go_topic: 'whispermail'
 # Confirmations
 status_go_confirmations_enabled: false
+# Bootstrapping
+status_go_boot_nodes: []
+status_go_rendezvous_addresses: []
 
 # Optional node keys, if no provided generated at startup.
 #status_go_node_key: ~
