@@ -7,8 +7,9 @@
         port: '{{ status_go_node_alt_port }}'
         tags: ['statusd', 'mail', 'devp2p']
         meta:
-          node_addr: '{{ node_addr }}'
-          node_enode: '{{ node_enode }}'
+          node_addr: '{{ status_go_node_addr }}'
+          node_enr: '{{ status_go_node_enr }}'
+          node_enode: '{{ status_go_node_enode }}'
           waku_enabled: '{{ status_go_waku_enabled | string }}'
         checks:
           - id: statusd-mail-health

@@ -18,6 +18,10 @@ status_go_topic: 'whispermail'
 # Confirmations
 status_go_confirmations_enabled: false
 
+# Optional node keys, if no provided generated at startup.
+#status_go_node_key: ~
+#status_go_node_addr: ~
+
 # Status-go node
 status_go_node_cont_name: '{{ status_go_service_name }}-node'
 status_go_node_cont_vol: '{{ status_go_service_path }}/node'

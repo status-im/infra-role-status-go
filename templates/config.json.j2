@@ -10,7 +10,7 @@
   "EnableNTPSync": true,
   "ListenAddr": "0.0.0.0:{{ status_go_node_listen_port }}",
   "AdvertiseAddr": "{{ ansible_host }}",
-  "NodeKey": "{{ node_key }}",
+  "NodeKey": "{{ status_go_node_key }}",
   "NetworkID": {{ status_go_eth_network }},
   "Rendezvous": true,
   "RegisterTopics": [ "{{ status_go_topic }}" ],

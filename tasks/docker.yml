@@ -15,5 +15,6 @@
     state: '{{ compose_state }}'
     restarted: '{{ compose_restart }}'
     recreate: |-
-      {{ status_go_config_file.changed
+      {{ ( status_go_config_file.changed or
+           status_go_key_file.changed )
       | ternary("always", compose_recreate) }}

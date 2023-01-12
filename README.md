@@ -18,6 +18,12 @@ status_go_node_cont_tag: 'deploy-test'
 status_go_waku_enabled: true
 status_go_log_level: 'DEBUG'
 ```
+If you want to provide specific node key you can use:
+```
+status_go_node_key: 'abc321...'
+status_go_node_addr: '123qwe...'
+status_go_node_enode: 'enode://123qwe...'
+```
 
 # Usage
 

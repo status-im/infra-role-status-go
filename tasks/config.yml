@@ -1,4 +1,16 @@
 ---
+- name: Create directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: dockremap
+    group: docker
+    recurse: true
+  with_items:
+    - '{{ status_go_node_cont_vol }}/keys'
+    - '{{ status_go_node_cont_vol }}/data'
+    - '{{ status_go_node_cont_vol }}/conf'
+
 - name: Create database directories
   file:
     path: '{{ item }}'
@@ -19,18 +31,13 @@
     mode: 0640
   register: status_go_config_file
 
-- name: Create script for calling RPC endpoint
+- name: Create wrapper scripts
   template:
-    src: 'rpc.sh.j2'
-    dest: '{{ status_go_service_path }}/rpc.sh'
+    src: '{{ item }}.j2'
+    dest: '{{ status_go_service_path }}/{{ item }}'
     owner: dockremap
     group: docker
     mode: 0755
-
-- name: Create script for using Postgres client
-  template:
-    src: 'psql.sh.j2'
-    dest: '{{ status_go_service_path }}/psql.sh'
-    owner: dockremap
-    group: docker
-    mode: 0755
+  with_items:
+    - 'rpc.sh'
+    - 'psql.sh'

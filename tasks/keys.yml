@@ -1,0 +1,37 @@
+---
+- name: Create nodekey file
+  when: status_go_node_key is defined
+  register: status_go_key_file
+  copy:
+    content: '{{ status_go_node_key }}'
+    dest:    '{{ status_go_node_cont_vol }}/keys/nodekey'
+    owner:   'dockremap'
+    group:   'docker'
+    mode:    0640
+
+- name: Create nodeaddr file
+  when: status_go_node_addr is defined
+  copy:
+    content: '{{ status_go_node_addr }}'
+    dest:    '{{ status_go_node_cont_vol }}/keys/nodeaddr'
+    owner:   'dockremap'
+    group:   'docker'
+    mode:    0640
+
+# Read keys
+- name: Create nodekey file
+  when: status_go_node_key is not defined
+  register: status_go_key_file
+  slurp:
+    src: '{{ status_go_node_cont_vol }}/keys/nodekey'
+
+- name: Create nodeaddr file
+  when: status_go_node_addr is defined
+  slurp:
+    src: '{{ status_go_node_cont_vol }}/keys/nodeaddr'
+
+- name: Set node key variables
+  when: node_key_file.content is defined
+  set_fact:
+    status_go_node_key: '{{ node_key_file.content | b64decode | trim }}'
+    status_go_node_addr: '{{ node_addr_file.content | b64decode | trim }}'

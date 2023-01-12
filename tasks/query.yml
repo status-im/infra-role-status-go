@@ -1,0 +1,28 @@
+---
+- name: 'Wait for RPC port to be available'
+  wait_for:
+    port: '{{ status_go_node_rpc_port }}'
+    delay: 5
+
+- name: 'Extract address of the node for Consul'
+  uri:
+    url: 'http://localhost:{{ status_go_node_rpc_port }}/'
+    method: POST
+    body: 
+      method: 'admin_nodeInfo'
+      params: []
+      jsonrpc: '2.0'
+      id: 1
+    status_code: 200
+    body_format: json
+  register: node_info
+
+- name: Extract node ENR and enode addresses
+  set_fact:
+    status_go_node_enr: >
+      {{ node_info.json.result.enr | mandatory | trim }}
+    status_go_node_enode: >
+      {{ node_info.json.result.enode | mandatory
+        | regex_replace("127.0.0.1", ansible_host)
+        | regex_replace("\?discport=0")
+        | trim }}

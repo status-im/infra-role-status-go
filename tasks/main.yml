@@ -1,32 +1,18 @@
 ---
-- name: Create directories
-  file:
-    path: '{{ item }}'
-    state: directory
-    owner: dockremap
-    group: docker
-    recurse: true
-  with_items:
-    - '{{ status_go_node_cont_vol }}/keys'
-    - '{{ status_go_node_cont_vol }}/data'
-    - '{{ status_go_node_cont_vol }}/conf'
-
-- name: Generate node key and address
-  include_role:
-    name: enode-setup
-  vars:
-    cont_name: '{{ status_go_service_name }}'
-    keys_path: '{{ status_go_node_cont_vol }}/keys'
-    listen_port: '{{ status_go_node_alt_port }}'
-
 - name: Generate config
   include_tasks: config.yml
 
+- name: Create key files
+  include_tasks: keys.yml
+
 - name: Create container
-  include_tasks: container.yml
+  include_tasks: docker.yml
 
 - name: Configure database
   include_tasks: database.yml
+
+- name: Query Node for address
+  include_tasks: query.yml
 
 - name: Configure Consul service
   include_tasks: consul.yml
