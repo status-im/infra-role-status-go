@@ -8,7 +8,6 @@
         tags: ['statusd', 'devp2p', '{{ status_go_consul_extra_tag }}']
         meta:
           node_addr: '{{ status_go_node_addr }}'
-          node_enr: '{{ status_go_node_enr }}'
           node_enode: '{{ status_go_node_enode }}'
           waku_enabled: '{{ status_go_waku_enabled | string }}'
         checks:

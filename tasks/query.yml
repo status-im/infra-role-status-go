@@ -17,10 +17,8 @@
     body_format: json
   register: node_info
 
-- name: Extract node ENR and enode addresses
+- name: Extract node enode address
   set_fact:
-    status_go_node_enr: >-
-      {{ node_info.json.result.enr | mandatory | trim }}
     status_go_node_enode: >-
       {{ node_info.json.result.enode | mandatory | trim
         | regex_replace("127.0.0.1", ansible_host)
