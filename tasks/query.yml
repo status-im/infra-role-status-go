@@ -19,6 +19,8 @@
 
 - name: Extract node enode address
   set_fact:
+    status_go_node_id: >-
+      {{ node_info.json.result.id | mandatory | trim }}
     status_go_node_enode: >-
       {{ node_info.json.result.enode | mandatory | trim
         | regex_replace("127.0.0.1", ansible_host)

@@ -7,7 +7,7 @@
         port: '{{ status_go_node_alt_port }}'
         tags: ['statusd', 'devp2p', '{{ status_go_consul_extra_tag }}']
         meta:
-          node_addr: '{{ status_go_node_addr }}'
+          node_id: '{{ status_go_node_id }}'
           node_enode: '{{ status_go_node_enode }}'
           waku_enabled: '{{ status_go_waku_enabled | string }}'
         checks:
