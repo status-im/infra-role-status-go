@@ -1,0 +1,5 @@
+---
+- name: Verify Waku v1 and v2 are not enabled together
+  assert:
+    that: 'not status_go_waku_v1_enabled or not status_go_waku_v2_enabled'
+    fail_msg: 'You cannot enable both Waku v1 and v2 at the same time!'

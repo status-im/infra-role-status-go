@@ -9,7 +9,8 @@
         meta:
           node_id: '{{ status_go_node_id }}'
           node_enode: '{{ status_go_node_enode }}'
-          waku_enabled: '{{ status_go_waku_enabled | string }}'
+          waku_v1_enabled: '{{ status_go_waku_v1_enabled | string }}'
+          waku_v2_enabled: '{{ status_go_waku_v2_enabled | string }}'
         checks:
           - id:   '{{ status_go_service_name }}-health'
             type: 'tcp'

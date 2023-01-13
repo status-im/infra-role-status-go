@@ -43,7 +43,7 @@ services:
       -pprof
       -pprof-port={{ status_go_node_pprof_port }}
 {% endif %}
-{% if status_go_mailserver_enabled %}
+{% if status_go_history_enabled %}
     depends_on:
       - 'db'
 {% endif %}
@@ -52,7 +52,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-{% if status_go_mailserver_enabled %}
+{% if status_go_history_enabled %}
 
   db:
     container_name: '{{ status_go_db_cont_name }}'

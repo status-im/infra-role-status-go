@@ -8,18 +8,21 @@
   "APIModules": "eth,web3,admin,waku,wakuext",
   "DataDir": "/data",
   "EnableNTPSync": true,
+{% if status_go_waku_v1_enabled %}
   "ListenAddr": "0.0.0.0:{{ status_go_node_listen_port }}",
+{% endif %}
   "AdvertiseAddr": "{{ ansible_host }}",
   "NodeKey": "{{ status_go_node_key }}",
   "NetworkID": {{ status_go_eth_network }},
-  "Rendezvous": true,
+  "Rendezvous": {{ status_go_waku_v1_rendezvous_enabled | to_json }},
   "RegisterTopics": [ "{{ status_go_register_topic }}" ],
   "RequireTopics": { "{{ status_go_require_topic }}": { "min": 3, "max": 5 } },
   "WakuConfig": {
-    "Enabled": {{ status_go_waku_enabled | to_json }},
+    "Enabled": {{ status_go_waku_v1_enabled | to_json }}{{ "," if status_go_waku_v1_enabled else "" }}
+{% if status_go_waku_v1_enabled %}
     "EnableConfirmations": {{ status_go_confirmations_enabled | to_json }},
-{% if status_go_mailserver_enabled %}
-    "EnableMailServer": {{ status_go_mailserver_enabled | to_json }},
+{% if status_go_history_enabled %}
+    "EnableMailServer": true,
     "MailServerPassword": "{{ status_go_wnode_password }}",
     "MailServerDataRetention": 30,
     "DatabaseConfig": {
@@ -35,6 +38,23 @@
     "RateLimitIP": 5,
     "RateLimitPeerID": 5,
     "RateLimitTolerance": 3
+{% endif %}
+  },
+  "WakuV2Config": {
+    "Enabled": {{ status_go_waku_v2_enabled | to_json }}{{ "," if status_go_waku_v2_enabled else "" }}
+{% if status_go_waku_v2_enabled %}
+    "Port": {{ status_go_node_listen_port }},
+    "EnableDiscV5": true,
+    "EnableConfirmations": {{ status_go_confirmations_enabled | to_json }},
+{% if status_go_history_enabled %}
+    "EnableStore": true,
+    "StoreCapacity": {{ status_go_waku_v2_store_capacity }},
+    "StoreSeconds": {{ status_go_waku_v2_store_seconds }},
+{% endif %}
+    "FullNode": true,
+    "LightClient": false,
+    "DataDir": "/data/waku"
+{% endif %}
   },
   "PushNotificationServerConfig": {
     "Enabled": {{ status_go_pn_server_enabled | to_json }},
@@ -42,15 +62,29 @@
   },
   "ClusterConfig": {
     "Enabled": true,
+{% if status_go_waku_v1_enabled %}
     "BootNodes": [
-{% for node in status_go_boot_nodes %}
+{% for node in status_go_waku_v1_boot_nodes %}
       "{{ node }}"{{ "," if not loop.last }}
 {% endfor %}
     ],
     "RendezvousNodes": [
-{% for node in status_go_rendezvous_addresses %}
+{% for node in status_go_waku_v1_rendezvous_addresses %}
       "{{ node }}"{{ "," if not loop.last }}
 {% endfor %}
     ]
+{% endif %}
+{% if status_go_waku_v2_enabled %}
+    "WakuNodes": [
+{% for node in status_go_waku_v2_boot_multi_addresses %}
+      "{{ node }}"{{ "," if not loop.last }}
+{% endfor %}
+    ],
+    "DiscV5BootstrapNodes": [
+{% for node in status_go_waku_v2_boot_enr_addresses %}
+      "{{ node }}"{{ "," if not loop.last }}
+{% endfor %}
+    ]
+{% endif %}
   }
 }

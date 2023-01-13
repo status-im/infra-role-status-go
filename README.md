@@ -15,7 +15,9 @@ This role configures a [`status-go`](https://github.com/status-im/status-go) __h
 The most important settings would be:
 ```yaml
 status_go_node_cont_tag: 'deploy-test'
-status_go_waku_enabled: true
+status_go_waku_v1_enabled: true
+status_go_waku_v2_enabled: false
+status_go_history_enabled: false
 status_go_log_level: 'DEBUG'
 ```
 If you want to provide specific node key you can use:
