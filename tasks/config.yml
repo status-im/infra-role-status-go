@@ -1,15 +1,16 @@
 ---
 - name: Create directories
   file:
-    path:    '{{ item }}'
+    path:    '{{ item.path }}'
+    mode:    '{{ item.mode }}'
     state:   'directory'
     owner:   'dockremap'
     group:   'docker'
     recurse: true
   with_items:
-    - '{{ status_go_node_cont_vol }}/keys'
-    - '{{ status_go_node_cont_vol }}/data'
-    - '{{ status_go_node_cont_vol }}/conf'
+    - { path: '{{ status_go_node_cont_vol }}/keys', mode: '0755' }
+    - { path: '{{ status_go_node_cont_vol }}/conf', mode: '0755' }
+    - { path: '{{ status_go_node_cont_vol }}/data', mode: '0750' }
 
 - name: Create database directories
   when: status_go_db_backup_enabled
