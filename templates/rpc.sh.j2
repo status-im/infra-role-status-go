@@ -29,7 +29,7 @@ PAYLOAD="{
 curl --request POST \
     --silent \
     --fail-with-body \
-    --header 'Content-type:application/json'
+    --header 'Content-type:application/json' \
     --data "${PAYLOAD}" \
     "${URL}" | \
     jq -e '., if .error != null then null|halt_error(2) else halt end'
