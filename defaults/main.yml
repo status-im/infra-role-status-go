@@ -24,7 +24,7 @@ status_go_waku_v1_rendezvous_enabled: false
 status_go_waku_v1_rendezvous_addresses: []
 
 # Waku v2
-status_go_waku_v2_enabled: true
+status_go_waku_v2_enabled: false
 status_go_waku_v2_boot_multi_addresses: []
 status_go_waku_v2_boot_enr_addresses: []
 
