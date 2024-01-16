@@ -73,7 +73,7 @@ services:
       - '{{ status_go_db_cont_vol }}/data:/var/lib/postgresql/data'
       - '{{ status_go_db_cont_vol }}/backup:/backup'
     healthcheck:
-      test: ["CMD", "pg_isready", "-p{{ status_go_db_cont_port }}", "-U{{ status_go_db_user }}"]
+      test: ["CMD", "pg_isready", "-p{{ status_go_db_cont_port }}", "-U{{ status_go_db_user }}", "-d{{ status_go_db_name }}"]
       interval: 30s
       retries: 3
 {% endif %}
