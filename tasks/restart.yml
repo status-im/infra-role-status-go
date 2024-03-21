@@ -1,6 +1,6 @@
 ---
 - name: Create timer for restarts
-  include_role: name=systemd-timer
+  include_role: name=infra-role-systemd-timer
   vars:
     systemd_timer_name: '{{ status_go_restart_timer_name }}'
     systemd_timer_user: 'root'

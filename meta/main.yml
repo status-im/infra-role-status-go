@@ -10,4 +10,10 @@ galaxy_info:
     versions:
     - xenial
     - focal
-  dependencies: []
+  dependencies:
+    - name: infra-role-consul-service
+      src: git+git@github.com:status-im/infra-role-consul-service.git
+      scm: git
+    - name: infra-role-systemd-timer
+      src: git+git@github.com:status-im/infra-role-systemd-timer.git
+      scm: git

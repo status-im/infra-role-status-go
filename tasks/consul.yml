@@ -43,6 +43,6 @@
   when: not status_go_node_metrics_enabled
 
 - name: Create Consul service definition - mail
-  include_role: name=consul-service
+  include_role: name=infra-role-consul-service
   vars:
     consul_config_name: '{{ status_go_service_name | replace("-", "_") }}'

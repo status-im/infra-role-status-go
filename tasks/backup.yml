@@ -1,6 +1,6 @@
 ---
 - name: Create timer for backups
-  include_role: name=systemd-timer
+  include_role: name=infra-role-systemd-timer
   vars:
     systemd_timer_name: '{{ status_go_db_backup_name }}'
     systemd_timer_user: '{{ status_go_db_backup_user }}'
