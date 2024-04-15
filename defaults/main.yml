@@ -92,4 +92,3 @@ cont_mem_limit: '{{ (ansible_memtotal_mb * 0.8) | int }}'
 # general container management
 compose_recreate: 'smart'
 compose_state: 'present'
-compose_restart: false

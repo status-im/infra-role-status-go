@@ -17,7 +17,7 @@
   register: pg_db_config
 
 - name: Restart database container
-  command: 'docker-compose restart db'
+  command: 'docker compose restart db'
   args:
     chdir: '{{ status_go_service_path }}'
   when: pg_db_config.changed

@@ -34,9 +34,9 @@ CONTAINER ID        NAMES               IMAGE                              CREAT
 dca9b2a708c2        status-go-node   statusteam/status-go:deploy-test   2 minutes ago       Up 4 seconds
 bfed6063abe9        status-go-db     postgres:9.6-alpine                2 minutes ago       Up 2 minutes
 ```
-You can manage the containers using `docker-compose`. To re-create them use:
+You can manage the containers using `docker compose`. To re-create them use:
 ```
-admin@mail-01.do-ams3.eth.test:/docker/status-go % docker-compose --compatibility up --force-recreate -d
+admin@mail-01.do-ams3.eth.test:/docker/status-go % docker compose --compatibility up --force-recreate -d
 Recreating status-go-db ... done
 Recreating status-go-node ... done
 ```

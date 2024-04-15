@@ -8,12 +8,11 @@
     mode: 0640
 
 - name: Create containers
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: '{{ status_go_service_path }}'
-    pull: true
-    build: false
+    pull: 'always'
+    build: 'never'
     state: '{{ compose_state }}'
-    restarted: '{{ compose_restart }}'
     recreate: |-
       {{ ( status_go_config_file.changed or
            status_go_key_file.changed )
