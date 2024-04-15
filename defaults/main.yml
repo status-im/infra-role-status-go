@@ -27,6 +27,7 @@ status_go_waku_v1_rendezvous_addresses: []
 status_go_waku_v2_enabled: false
 status_go_waku_v2_boot_multi_addresses: []
 status_go_waku_v2_boot_enr_addresses: []
+status_go_waku_v2_use_shard_as_default_topic: false
 
 # Enable storing historical messages.
 status_go_history_enabled: false
@@ -46,6 +47,7 @@ status_go_node_pprof_enabled: false
 status_go_node_pprof_port: 52525
 status_go_node_metrics_enabled: true
 status_go_node_metrics_port: 9305
+#status_go_node_cluster_id: 16
 # Alternative PostgreSQL database for whisper offline inbox
 status_go_db_cont_name: '{{ status_go_service_name }}-db'
 status_go_db_cont_vol: '{{ status_go_service_path }}/db'

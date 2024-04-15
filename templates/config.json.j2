@@ -51,6 +51,7 @@
     "StoreCapacity": {{ status_go_waku_v2_store_capacity }},
     "StoreSeconds": {{ status_go_waku_v2_store_seconds }},
 {% endif %}
+    "UseShardAsDefaultTopic": {{ status_go_waku_v2_use_shard_as_default_topic | to_json }}{{ "," if status_go_waku_v2_use_shard_as_default_topic else "" }}
     "FullNode": true,
     "LightClient": false,
     "DataDir": "/data/waku"
@@ -61,6 +62,9 @@
     "GorushURL": "{{ status_go_pn_server_gorush_url }}"
   },
   "ClusterConfig": {
+{% if status_go_node_cluster_id is defined %}
+    "ClusterID": {{ status_go_node_cluster_id }},
+{% endif %}
     "Enabled": true,
 {% if status_go_waku_v1_enabled %}
     "BootNodes": [
