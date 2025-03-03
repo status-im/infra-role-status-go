@@ -40,6 +40,7 @@ status_go_node_cont_name: '{{ status_go_service_name }}-node'
 status_go_node_cont_vol: '{{ status_go_service_path }}/node'
 status_go_node_cont_tag: 'latest'
 status_go_node_cont_image: 'statusteam/status-go:{{ status_go_node_cont_tag }}'
+status_go_node_cont_mem_limit: '{{ (ansible_memtotal_mb * 0.8) | int }}' # to avoid killing the host
 status_go_node_listen_port: 30504
 status_go_node_alt_port: 443
 status_go_node_rpc_port: 8545
@@ -87,9 +88,6 @@ status_go_restart_timer_frequency: 'daily'
 status_go_restart_timer_random_delay_sec: 21600 # 6 hours
 
 status_go_consul_extra_tag: '{{ "mail" if status_go_history_enabled else "whisper" }}'
-
-# resources limits to avoid killing the host
-cont_mem_limit: '{{ (ansible_memtotal_mb * 0.8) | int }}'
 
 # general container management
 compose_recreate: 'smart'

@@ -10,7 +10,7 @@ services:
       resources:
         # some limits due to statusd hogging resources
         limits:
-          memory: '{{ cont_mem_limit }}m'
+          memory: '{{ status_go_node_cont_mem_limit }}m'
     labels:
       # enable image updates via watchtower
       com.centurylinklabs.watchtower.enable: '{{ status_go_watchtower_enabled|lower }}'
