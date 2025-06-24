@@ -46,3 +46,9 @@
   include_role: name=infra-role-consul-service
   vars:
     consul_config_name: '{{ status_go_service_name | replace("-", "_") }}'
+    consul_default_check_disabled:           '{{ status_go_consul_check_disabled }}'
+    consul_default_check_interval:           '{{ status_go_consul_check_interval }}'
+    consul_default_check_timeout:            '{{ status_go_consul_check_timeout }}'
+    consul_default_success_before_passing:   '{{ status_go_consul_success_before_passing }}'
+    consul_default_failures_before_warning:  '{{ status_go_consul_failures_before_warning }}'
+    consul_default_failures_before_critical: '{{ status_go_consul_failures_before_critical }}'

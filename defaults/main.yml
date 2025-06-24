@@ -88,6 +88,12 @@ status_go_restart_timer_frequency: 'daily'
 status_go_restart_timer_random_delay_sec: 21600 # 6 hours
 
 status_go_consul_extra_tag: '{{ "mail" if status_go_history_enabled else "whisper" }}'
+status_go_consul_check_disabled: false
+status_go_consul_check_interval: '60s'
+status_go_consul_check_timeout: '5s'
+status_go_consul_success_before_passing: 0
+status_go_consul_failures_before_warning: 3
+status_go_consul_failures_before_critical: 6
 
 # general container management
 compose_recreate: 'smart'
