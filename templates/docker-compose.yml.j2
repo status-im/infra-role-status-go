@@ -1,4 +1,9 @@
 ---
+networks:
+  default:
+    name: '{{ status_go_docker_network_name }}'
+    external: true
+
 services:
   node:
     container_name: '{{ status_go_node_cont_name }}'

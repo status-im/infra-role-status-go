@@ -3,6 +3,7 @@
 status_go_service_name: 'status-go'
 status_go_service_path: '/docker/{{ status_go_service_name }}'
 status_go_service_compose: '{{ status_go_service_path }}/docker-compose.yml'
+status_go_docker_network_name: '{{ gorush_docker_network_name }}'
 
 # Options: ERROR|WARN|INFO|DEBUG|TRACE
 status_go_log_level: 'INFO'
